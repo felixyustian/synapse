@@ -1,4 +1,4 @@
-# Synapse
+# Synapse - An AI-Based Automated Meeting Assistant
 
 [The Problem](#problem) | [Features](#features) | [Use Case](#use-case)
 
