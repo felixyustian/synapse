@@ -1,62 +1,110 @@
-Synapse - An AI-Based Automated Meeting Assistant
-<p> Abstract
-Synapse is an AI-powered intelligent meeting assistant designed to address productivity inefficiencies in the modern workplace. Professionals across Southeast Asia spend significant time in meetings and post-meeting administrative tasks, such as writing minutes, identifying action points, and drafting follow-up emails. Synapse automates this workflow by instantly transforming meeting transcripts into concise summaries, actionable task lists, and draft communications. The platform is optimized to understand the context of conversations and extract the most crucial information. By providing intelligent summaries, task extraction, and draft automation, Synapse offers a scalable solution that enables teams to focus on strategic work, improve accountability, and accelerate project cycles.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse - Your AI Meeting Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-How the Application Solve the Problem
-Synapse directly solves the problem of meeting inefficiencies by automating the entire time-consuming post-meeting workflow:
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Synapse</a>
+            <ul>
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#use-case">Use Case</a></li>
+            </ul>
+        </nav>
+    </header>
 
-Eliminates Manual Administrative Work: The application takes over repetitive tasks such as listening back to recordings, typing minutes, and drafting emails. By automating summaries and email drafts, Synapse saves valuable time for every meeting participant.
+    <main>
+        <section id="hero">
+            <div class="container hero-content">
+                <h1>Turn Conversations into Actions. Instantly.</h1>
+                <p>Synapse is an intelligent meeting assistant that automates your post-meeting workflow, creating summaries, tasks, and follow-ups so you can focus on what matters.</p>
+                <a href="#" class="btn">Request a Demo</a>
+            </div>
+        </section>
 
-Creating Clarity and Accountability: Often, action items are lost or misinterpreted in manual notes. The AI ​​task extraction feature accurately identifies "who did what and when," then presents them in a clear format. This ensures no tasks are missed and increases team accountability.
+        <section id="problem">
+            <div class="container">
+                <h2>The Meeting Aftermath: Lost Time & Accountability</h2>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <h3>🕒 Manual Admin Work</h3>
+                        <p>Hours wasted writing minutes, identifying tasks, and drafting follow-up emails after every single meeting.</p>
+                    </div>
+                    <div class="problem-card">
+                        <h3>❓ Lost in Translation</h3>
+                        <p>Key decisions and action items are often missed, misinterpreted, or forgotten in a sea of notes.</p>
+                    </div>
+                    <div class="problem-card">
+                        <h3>📉 Lack of Clarity</h3>
+                        <p>Ambiguity about "who does what by when" slows down projects and harms team productivity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="features">
+            <div class="container">
+                <h2>Features Designed for Productivity</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📄 Automatic Summary</h4>
+                        <p>Get concise summaries of key discussions, arguments, and decisions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎯 Action Point Extraction</h4>
+                        <p>Intelligently identifies tasks, assigned owners, and deadlines from the conversation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚖️ Decision Logging</h4>
+                        <p>Generates a clear list of all key decisions agreed upon during the meeting.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>✉️ Draft Follow-Up Email</h4>
+                        <p>Creates a ready-to-send email with the summary and action points for all participants.</p>
+                    </div>
+                     <div class="feature-card">
+                        <h4>🔗 Workflow Integration</h4>
+                        <p>Seamlessly syncs extracted tasks to your favorite tools like Asana, Jira, and Trello.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🧠 LLaMA-Powered Context</h4>
+                        <p>Goes beyond keywords to understand conversational nuance for higher accuracy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-Becoming a Centralized Source of Information: The summaries and task lists generated by Synapse serve as an objective "single source of truth" for a meeting. This reduces misunderstandings and aligns all participants, even those unable to attend, on decisions and next steps.
+        <section id="use-case">
+            <div class="container">
+                <h2>See It In Action: Budi's Story</h2>
+                <div class="use-case-content">
+                    <div class="use-case-text">
+                        <p><strong>Before Synapse:</strong> Budi, a Project Manager in Semarang, spent 30 minutes after each weekly sync compiling notes and assigning tasks. Sometimes, things slipped through the cracks.</p>
+                        <p><strong>After Synapse:</strong> The meeting ends. Minutes later, Budi reviews an AI-generated dashboard, exports tasks to Asana with one click, and sends a perfect follow-up email. The entire process is done in 2 minutes.</p>
+                        <div class="value-prop">
+                            30 Minutes of Manual Work → 2 Minutes of Smart Clicks
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-Main Features & User Journey
-Main Features:
+    </main>
 
-Automatic Transcript Input: Ability to upload transcript files or integrate directly with video conferencing platforms.
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Synapse AI. All rights reserved.</p>
+        </div>
+    </footer>
 
-Automatic Meeting Summary: Generates a concise summary of the meeting's discussions, arguments, and key takeaways.
-
-Action Point Extraction: Intelligently identifies tasks, who is assigned (who is responsible), and the stated deadlines.
-
-Decision Recording: Capture and list key decisions agreed upon during a meeting.
-
-Draft Follow-Up Email: Create a ready-to-send draft email with a summary and action points for all participants.
-
-Workflow Integration: Connect with Calendar and project management tools (Jira, Asana, Trello) to sync tasks.
-
-User Journey:
-
-Initial Setup: The user (project manager) logs in to Synapse and authorizes access to their Google Calendar and Asana account.
-
-Meeting Complete: Once the Google Meet meeting concludes, the transcript is automatically sent to Synapse through the integration.
-
-Notification: The user receives an email notification: "Analysis for your 'Weekly Project Sync' meeting is ready."
-
-Dashboard Review: The user clicks the link and is taken to the meeting dashboard in Synapse. They see the summary, decision list, and AI-extracted action points.
-
-Export Task: The user reviews the list of action points and then clicks the "Export to Asana" button. These tasks are automatically created in the relevant Asana project.
-
-Send Follow-Up: The user opens the "Draft Email" tab, makes minor wording adjustments, and then presses "Send to Participants."
-
-Archive: Meeting analytics are securely stored and searchable within Synapse for future reference.
-
-Use Case & How LLaMA Adds Value
-Use Case:
-Budi, a project manager in Semarang, has just completed a one-hour weekly coordination meeting with his remote team. The meeting transcript from Google Meet is automatically sent to Synapse. A few minutes later:
-
-Budi opens the Synapse dashboard and immediately sees a brief summary of the meeting's key decisions: "The launch of feature X is postponed by one week for bug fixing."
-
-Below the summary, there is a clear list of "Action Points":
-
-@Siti: Update the project timeline in Jira before the end of the day.
-
-@Eko: Prepare a draft delay communication for the marketing team.
-
-Synapse has also drafted a follow-up email containing the summary and action points. Budi simply had to press the "Send" button to distribute the message to all participants. The entire post-meeting process, which would normally take 30 minutes, was completed in 2 minutes.
-
-How LLaMA Adds Value:
-LLaMA provides intelligence that traditional automation scripts lack.
-
-Contextual Extraction: LLaMA can distinguish between casual discussion about a task and a real commitment to it. It understands the context of the conversation to identify the task, who is responsible, and how it relates to the task. </p>
+</body>
+</html>
