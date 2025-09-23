@@ -1,5 +1,5 @@
 Synapse - An AI-Based Automated Meeting Assistant
-Abstract
+<p> Abstract
 Synapse is an AI-powered intelligent meeting assistant designed to address productivity inefficiencies in the modern workplace. Professionals across Southeast Asia spend significant time in meetings and post-meeting administrative tasks, such as writing minutes, identifying action points, and drafting follow-up emails. Synapse automates this workflow by instantly transforming meeting transcripts into concise summaries, actionable task lists, and draft communications. The platform is optimized to understand the context of conversations and extract the most crucial information. By providing intelligent summaries, task extraction, and draft automation, Synapse offers a scalable solution that enables teams to focus on strategic work, improve accountability, and accelerate project cycles.
 
 How the Application Solve the Problem
@@ -59,4 +59,4 @@ Synapse has also drafted a follow-up email containing the summary and action poi
 How LLaMA Adds Value:
 LLaMA provides intelligence that traditional automation scripts lack.
 
-Contextual Extraction: LLaMA can distinguish between casual discussion about a task and a real commitment to it. It understands the context of the conversation to identify the task, who is responsible, and how it relates to the task.
+Contextual Extraction: LLaMA can distinguish between casual discussion about a task and a real commitment to it. It understands the context of the conversation to identify the task, who is responsible, and how it relates to the task. </p>
