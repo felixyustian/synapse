@@ -1,60 +1,46 @@
-# Synapse - An AI-Based Automated Meeting Assistant
+# Synapse: AI-Based Automated Meeting Assistant
 
-[The Problem](#problem) | [Features](#features) | [Use Case](#use-case)
 
----
+**Turn Conversations into Actions. Instantly.**
 
-# Turn Conversations into Actions. Instantly.
+Synapse is an intelligent meeting assistant designed to automate your post-meeting workflow. By leveraging advanced LLMs (like LLaMA), it creates summaries, extracts actionable tasks, and drafts follow-up communications so you can focus on execution rather than administration.
 
-Synapse is an intelligent meeting assistant that automates your post-meeting workflow, creating summaries, tasks, and follow-ups so you can focus on what matters.
+## 📄 Repository Contents
 
-[Request a Demo](#)
+* `Synapse_ Revolutionizing Meeting Productivity with AI.pdf`: A detailed presentation/whitepaper outlining the architecture, market analysis, and solution design.
+* `README.md`: Project overview and features.
 
----
+## 🛑 The Problem
 
-## The Meeting Aftermath: Lost Time & Accountability
+**The Meeting Aftermath: Lost Time & Accountability**
+* **🕒 Manual Admin Work**: Hours wasted writing minutes and drafting emails after every sync.
+* **❓ Lost in Translation**: Key decisions are often missed or misinterpreted in messy notes.
+* **📉 Lack of Clarity**: Ambiguity about "who does what by when" slows down projects.
 
-### 🕒 Manual Admin Work
-Hours wasted writing minutes, identifying tasks, and drafting follow-up emails after every single meeting.
+## ⚡ Features
 
-### ❓ Lost in Translation
-Key decisions and action items are often missed, misinterpreted, or forgotten in a sea of notes.
+* **📄 Automatic Summarization**: Generates concise summaries of key arguments and discussions.
+* **🎯 Action Point Extraction**: Intelligently identifies tasks, owners, and deadlines from conversational audio/text.
+* **🧠 LLaMA-Powered Context**: Uses state-of-the-art open-source LLMs to understand nuance beyond simple keywords.
+* **✉️ Draft Follow-Up Emails**: Creates ready-to-send emails containing summaries and action items.
+* **⚖️ Decision Logging**: Maintains a clear registry of all key decisions made.
+* **🔗 Workflow Integration**: (Planned) Sync tasks directly to tools like Asana, Jira, and Trello.
 
-### 📉 Lack of Clarity
-Ambiguity about "who does what by when" slows down projects and harms team productivity.
+## 🚀 Use Case Scenario
 
----
+> **Before Synapse:**
+> Budi, a Project Manager, spent 30 minutes after every weekly sync compiling notes. Important details often slipped through the cracks.
 
-## Features Designed for Productivity
+> **After Synapse:**
+> The meeting ends. Minutes later, Budi reviews an AI-generated dashboard, approves the extracted tasks, and sends a perfect follow-up email with one click.
+>
+> **Result:** 30 Minutes of Manual Work → 2 Minutes of Smart Clicks.
 
-#### 📄 Automatic Summary
-Get concise summaries of key discussions, arguments, and decisions.
+## 🛠️ Technology Concept
 
-#### 🎯 Action Point Extraction
-Intelligently identifies tasks, assigned owners, and deadlines from the conversation.
+* **Core AI**: LLaMA (Large Language Model Meta AI) for natural language understanding.
+* **Function**: Speech-to-Text processing followed by entity extraction and summarization.
 
-#### ⚖️ Decision Logging
-Generates a clear list of all key decisions agreed upon during the meeting.
+## 📄 License
 
-#### ✉️ Draft Follow-Up Email
-Creates a ready-to-send email with the summary and action points for all participants.
-
-#### 🔗 Workflow Integration
-Seamlessly syncs extracted tasks to your favorite tools like Asana, Jira, and Trello.
-
-#### 🧠 LLaMA-Powered Context
-Goes beyond keywords to understand conversational nuance for higher accuracy.
-
----
-
-## See It In Action: Budi's Story
-
-**Before Synapse:** Budi, a Project Manager in Semarang, spent 30 minutes after each weekly sync compiling notes and assigning tasks. Sometimes, things slipped through the cracks.
-
-**After Synapse:** The meeting ends. Minutes later, Budi reviews an AI-generated dashboard, exports tasks to Asana with one click, and sends a perfect follow-up email. The entire process is done in 2 minutes.
-
-> 30 Minutes of Manual Work → 2 Minutes of Smart Clicks
-
----
-
-© 2025 Synapse AI. All rights reserved.
+This project documentation is licensed under the **GPL-3.0 License**.
