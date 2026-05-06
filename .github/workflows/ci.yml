@@ -1,0 +1,54 @@
+name: CI — Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt
+          pip install pytest httpx
+
+      - name: Lint check
+        run: |
+          pip install ruff
+          ruff check backend/
+
+      - name: Syntax check
+        run: python -m py_compile backend/main.py
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build ./backend -t synapse-backend:test
+
+      - name: Build frontend image
+        run: docker build ./frontend -t synapse-frontend:test
+
+      - name: Smoke test backend
+        run: |
+          docker run -d -p 8000:8000 \
+            -e ANTHROPIC_API_KEY=test_key \
+            --name synapse-backend-test \
+            synapse-backend:test
+          sleep 3
+          curl -f http://localhost:8000/ || exit 1
+          docker stop synapse-backend-test
