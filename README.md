@@ -1,46 +1,169 @@
-# Synapse: AI-Based Automated Meeting Assistant
-
+# Synapse — AI-Powered Meeting Assistant
 
 **Turn Conversations into Actions. Instantly.**
 
-Synapse is an intelligent meeting assistant designed to automate your post-meeting workflow. By leveraging advanced LLMs (like LLaMA), it creates summaries, extracts actionable tasks, and drafts follow-up communications so you can focus on execution rather than administration.
+Synapse is a full-stack, deployment-ready AI meeting assistant. Paste any meeting transcript and receive an executive summary, action items with owners and deadlines, key decisions, and a complete follow-up email draft — all powered by Claude.
 
-## 📄 Repository Contents
+---
 
-* `Synapse_ Revolutionizing Meeting Productivity with AI.pdf`: A detailed presentation/whitepaper outlining the architecture, market analysis, and solution design.
-* `README.md`: Project overview and features.
+## ✨ Features
 
-## 🛑 The Problem
+| Feature | Description |
+|---|---|
+| 📋 **Executive Summary** | Concise 3–5 sentence overview of the meeting |
+| ✅ **Action Item Extraction** | Tasks with assigned owner, deadline, and priority |
+| ⚖️ **Decision Logging** | All key decisions with rationale and impact |
+| ✉️ **Follow-Up Email Draft** | Ready-to-send email — just review and hit send |
+| 🏷️ **Key Topic Detection** | High-level themes from the conversation |
 
-**The Meeting Aftermath: Lost Time & Accountability**
-* **🕒 Manual Admin Work**: Hours wasted writing minutes and drafting emails after every sync.
-* **❓ Lost in Translation**: Key decisions are often missed or misinterpreted in messy notes.
-* **📉 Lack of Clarity**: Ambiguity about "who does what by when" slows down projects.
+---
 
-## ⚡ Features
+## 🏗️ Architecture
 
-* **📄 Automatic Summarization**: Generates concise summaries of key arguments and discussions.
-* **🎯 Action Point Extraction**: Intelligently identifies tasks, owners, and deadlines from conversational audio/text.
-* **🧠 LLaMA-Powered Context**: Uses state-of-the-art open-source LLMs to understand nuance beyond simple keywords.
-* **✉️ Draft Follow-Up Emails**: Creates ready-to-send emails containing summaries and action items.
-* **⚖️ Decision Logging**: Maintains a clear registry of all key decisions made.
-* **🔗 Workflow Integration**: (Planned) Sync tasks directly to tools like Asana, Jira, and Trello.
+```
+synapse/
+├── backend/          # FastAPI Python backend
+│   ├── main.py       # API routes & Claude integration
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/         # Static HTML/JS/CSS UI
+│   ├── index.html    # Single-page application
+│   ├── nginx.conf    # Nginx reverse proxy config
+│   └── Dockerfile
+├── .github/
+│   └── workflows/
+│       └── ci.yml    # GitHub Actions CI pipeline
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
 
-## 🚀 Use Case Scenario
+---
 
-> **Before Synapse:**
-> Budi, a Project Manager, spent 30 minutes after every weekly sync compiling notes. Important details often slipped through the cracks.
+## 🚀 Quick Start
 
-> **After Synapse:**
-> The meeting ends. Minutes later, Budi reviews an AI-generated dashboard, approves the extracted tasks, and sends a perfect follow-up email with one click.
->
-> **Result:** 30 Minutes of Manual Work → 2 Minutes of Smart Clicks.
+### Prerequisites
+- Docker & Docker Compose installed
+- An [Anthropic API key](https://console.anthropic.com/)
 
-## 🛠️ Technology Concept
+### 1. Clone the repository
+```bash
+git clone https://github.com/felixyustian/synapse.git
+cd synapse
+```
 
-* **Core AI**: LLaMA (Large Language Model Meta AI) for natural language understanding.
-* **Function**: Speech-to-Text processing followed by entity extraction and summarization.
+### 2. Set up environment variables
+```bash
+cp .env.example .env
+# Edit .env and add your ANTHROPIC_API_KEY
+```
+
+### 3. Launch with Docker Compose
+```bash
+docker compose up --build
+```
+
+**That's it.** Open [http://localhost](http://localhost) in your browser.
+
+---
+
+## 🛠️ Local Development (without Docker)
+
+### Backend
+```bash
+cd backend
+pip install -r requirements.txt
+export ANTHROPIC_API_KEY=your_key_here
+uvicorn main:app --reload --port 8000
+```
+API docs available at: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### Frontend
+```bash
+# The frontend is plain HTML — just open it in a browser:
+open frontend/index.html
+
+# Or serve it with any static server:
+cd frontend && python -m http.server 3000
+```
+
+---
+
+## 🔌 API Reference
+
+### `POST /api/analyze`
+
+Analyzes a meeting transcript and returns structured insights.
+
+**Request Body:**
+```json
+{
+  "transcript": "Alice: We need to finalize the budget...",
+  "meeting_title": "Q3 Planning Sync",
+  "attendees": ["Alice", "Bob", "Carol"]
+}
+```
+
+**Response:**
+```json
+{
+  "summary": "The team aligned on a product launch for the 30th...",
+  "key_topics": ["Launch Timeline", "Budget", "Staging Environment"],
+  "action_items": [
+    {
+      "task": "Set up QA staging environment",
+      "owner": "Bob",
+      "deadline": "End of day tomorrow",
+      "priority": "High"
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "David reassigned to load testing",
+      "rationale": "Load testing is on the critical path for the launch",
+      "impact": "Admin panel work delayed"
+    }
+  ],
+  "follow_up_email": "Subject: Meeting Notes — Q3 Planning Sync\n\nHi team..."
+}
+```
+
+### `GET /health`
+Health check endpoint — returns `{"status": "healthy"}`.
+
+---
+
+## ☁️ Cloud Deployment
+
+### Render
+1. Push to GitHub
+2. Create two Render services — a **Web Service** (backend) and a **Static Site** (frontend)
+3. Set `ANTHROPIC_API_KEY` as an environment variable in the backend service
+
+### Railway / Fly.io
+Use the provided `docker-compose.yml` as the base configuration. Both platforms support Docker Compose deployments natively.
+
+### VPS (DigitalOcean, AWS EC2, etc.)
+```bash
+# On the server:
+git clone https://github.com/felixyustian/synapse.git
+cd synapse
+cp .env.example .env && nano .env  # Add your API key
+docker compose up -d
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m 'feat: add my feature'`
+4. Push to the branch: `git push origin feature/my-feature`
+5. Open a Pull Request
+
+---
 
 ## 📄 License
 
-This project documentation is licensed under the **GPL-3.0 License**.
+GPL-3.0 License — see [LICENSE](LICENSE) for details.
