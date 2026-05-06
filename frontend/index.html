@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synapse — AI Meeting Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a0a0f;
+      --surface:  #111118;
+      --border:   #1e1e2e;
+      --accent:   #00f5c4;
+      --accent2:  #7c5cfc;
+      --danger:   #ff4d6d;
+      --text:     #e8e8f0;
+      --muted:    #6b6b85;
+      --card:     #13131e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background Mesh ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 0%, rgba(124,92,252,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(0,245,196,0.08) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,15,0.7);
+      position: sticky;
+      top: 0;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── Main Layout ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 5rem;
+    }
+
+    /* ── Input Card ── */
+    .input-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus { border-color: var(--accent2); }
+
+    textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      min-height: 180px;
+    }
+    textarea:focus { border-color: var(--accent2); }
+    textarea::placeholder { color: var(--muted); }
+
+    /* ── Button ── */
+    .btn-analyze {
+      width: 100%;
+      margin-top: 1.2rem;
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent2), #5a3fd4);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-analyze:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(124,92,252,0.4);
+    }
+    .btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* ── Loading ── */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 3rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 2rem;
+    }
+    .loading.visible { display: block; }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 1.2rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: var(--muted); font-size: 0.9rem; }
+    .loading strong { display: block; font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: 0.3rem; color: var(--text); }
+
+    /* ── Error ── */
+    .error-box {
+      display: none;
+      background: rgba(255,77,109,0.08);
+      border: 1px solid rgba(255,77,109,0.3);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      color: var(--danger);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .error-box.visible { display: block; }
+
+    /* ── Results ── */
+    .results { display: none; }
+    .results.visible { display: block; }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    @media (max-width: 700px) { .results-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(124,92,252,0.3); }
+    .card.full { grid-column: 1 / -1; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .card-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .icon-summary  { background: rgba(0,245,196,0.1); }
+    .icon-actions  { background: rgba(124,92,252,0.1); }
+    .icon-decisions{ background: rgba(255,165,0,0.1); }
+    .icon-email    { background: rgba(100,180,255,0.1); }
+    .icon-topics   { background: rgba(255,100,150,0.1); }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .summary-text {
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 0.95rem;
+    }
+
+    /* ── Topics ── */
+    .topics-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .topic-chip {
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      background: rgba(124,92,252,0.12);
+      border: 1px solid rgba(124,92,252,0.25);
+      color: #a88fff;
+    }
+
+    /* ── Action Items ── */
+    .action-item {
+      padding: 0.9rem;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 0.7rem;
+    }
+    .action-item:last-child { margin-bottom: 0; }
+    .action-task {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.45rem;
+      line-height: 1.5;
+    }
+    .action-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .meta-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .priority-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .p-high   { background: #ff4d6d; box-shadow: 0 0 6px #ff4d6d; }
+    .p-medium { background: #ffc107; box-shadow: 0 0 6px #ffc107; }
+    .p-low    { background: #00f5c4; box-shadow: 0 0 6px #00f5c4; }
+
+    /* ── Decisions ── */
+    .decision-item {
+      padding: 0.9rem;
+      border-left: 2px solid rgba(255,165,0,0.4);
+      background: rgba(255,165,0,0.04);
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 0.7rem;
+    }
+    .decision-item:last-child { margin-bottom: 0; }
+    .decision-title {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+    }
+    .decision-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Email ── */
+    .email-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      color: #c8c8d8;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      margin-top: 0.8rem;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Demo Banner ── */
+    .demo-banner {
+      background: rgba(0,245,196,0.05);
+      border: 1px solid rgba(0,245,196,0.15);
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .demo-banner span { font-size: 0.85rem; color: var(--muted); }
+    .demo-banner strong { color: var(--accent); }
+    .btn-demo {
+      padding: 0.45rem 1rem;
+      border: 1px solid rgba(0,245,196,0.3);
+      border-radius: 8px;
+      background: rgba(0,245,196,0.08);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-demo:hover { background: rgba(0,245,196,0.14); }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Synapse
+  </div>
+  <span class="badge">AI Meeting Assistant</span>
+</header>
+
+<section class="hero">
+  <h1>Turn Conversations<br>into <span>Actions</span></h1>
+  <p>Paste your meeting transcript. Get an executive summary, action items, decisions, and a ready-to-send follow-up email — instantly.</p>
+</section>
+
+<main>
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <span>New here? Try with a <strong>sample transcript</strong> to see Synapse in action.</span>
+    <button class="btn-demo" onclick="loadDemo()">Load Demo Transcript</button>
+  </div>
+
+  <!-- Input Card -->
+  <div class="input-card">
+    <div class="row">
+      <div>
+        <label>Meeting Title</label>
+        <input type="text" id="meetingTitle" placeholder="e.g. Q3 Planning Sync" />
+      </div>
+      <div>
+        <label>Attendees (comma-separated)</label>
+        <input type="text" id="attendees" placeholder="e.g. Alice, Bob, Charlie" />
+      </div>
+    </div>
+    <div>
+      <label>Meeting Transcript</label>
+      <textarea id="transcript" placeholder="Paste your meeting transcript here...
+
+You can include speaker labels like:
+Alice: We need to finalize the budget by next Friday.
+Bob: I'll handle the vendor negotiations this week."></textarea>
+    </div>
+    <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">
+      ✦ Analyze Meeting
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <strong>Synapse is thinking…</strong>
+    <p>Extracting insights from your transcript.</p>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-grid">
+
+      <!-- Summary -->
+      <div class="card full">
+        <div class="card-header">
+          <div class="card-icon icon-summary">📋</div>
+          <span class="card-title">Executive Summary</span>
+        </div>
+        <p class="summary-text" id="summaryText"></p>
+      </div>
+
+      <!-- Topics -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon icon-topics">🏷</div>
+          <span class="card-title">Key Topics</span>
+        </div>
+        <div class="topics-wrap" id="topicsWrap"></div>
+      </div>
+
+      <!-- Decisions -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon icon-decisions">⚖️</div>
+          <span class="card-title">Decisions Made</span>
+        </div>
+        <div id="decisionsWrap"></div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="card full">
+        <div class="card-header">
+          <div class="card-icon icon-actions">✅</div>
+          <span class="card-title">Action Items</span>
+        </div>
+        <div id="actionsWrap"></div>
+      </div>
+
+      <!-- Follow-up Email -->
+      <div class="card full">
+        <div class="card-header">
+          <div class="card-icon icon-email">✉️</div>
+          <span class="card-title">Follow-Up Email Draft</span>
+        </div>
+        <div class="email-body" id="emailBody"></div>
+        <button class="copy-btn" id="copyBtn" onclick="copyEmail()">Copy to Clipboard</button>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Synapse — AI Meeting Assistant · Powered by Claude · GPL-3.0 License
+</footer>
+
+<script>
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : '';  // Same origin in production
+
+  const DEMO_TRANSCRIPT = `Alice (PM): Alright, let's kick off. Main agenda today is the product launch timeline and budget.
+
+Bob (Engineering Lead): We finished the core API work last sprint. The remaining blockers are the mobile notification system and load testing.
+
+Alice: How long do we need for load testing?
+
+Bob: If we start Monday, we need two weeks. So that puts us at the 28th.
+
+Carol (Marketing): That's cutting it close. We've committed to the press release going out on the 30th. I need at least 48 hours before launch to brief journalists.
+
+Alice: Okay, so that means engineering needs to sign off by the 28th at the latest. Bob, can you commit to that?
+
+Bob: We can, but I'll need one extra developer on the load testing. I'm going to reassign David from the admin panel work.
+
+Alice: Agreed. David moves to load testing effective Monday. Carol, can you draft the press release skeleton this week so we're not scrambling?
+
+Carol: Yes, I'll have a first draft by Wednesday.
+
+Alice: Great. On budget — finance approved the additional $15,000 for the influencer campaign. Carol, that's yours to manage.
+
+Carol: Perfect. I'll split it 60/40 between Instagram and YouTube.
+
+Bob: One more thing — we should set up a shared staging environment for QA. Right now the QA team is blocked because they don't have access.
+
+Alice: Good catch. Bob, please set that up by end of day tomorrow and send login credentials to the QA team.
+
+Bob: Will do.
+
+Alice: Okay, to recap — launch stays on the 30th. Engineering deadline is the 28th. David moves to load testing. Carol delivers press draft Wednesday. Bob sets up staging environment tomorrow. Meeting adjourned.`;
+
+  function loadDemo() {
+    document.getElementById('meetingTitle').value = 'Product Launch Planning';
+    document.getElementById('attendees').value = 'Alice, Bob, Carol, David';
+    document.getElementById('transcript').value = DEMO_TRANSCRIPT;
+  }
+
+  function setLoading(on) {
+    document.getElementById('loading').classList.toggle('visible', on);
+    document.getElementById('analyzeBtn').disabled = on;
+    document.getElementById('analyzeBtn').textContent = on ? '⏳ Analyzing…' : '✦ Analyze Meeting';
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('errorBox');
+    box.textContent = '⚠ ' + msg;
+    box.classList.add('visible');
+  }
+
+  function clearError() {
+    document.getElementById('errorBox').classList.remove('visible');
+  }
+
+  function priorityDot(p) {
+    const cls = { High: 'p-high', Medium: 'p-medium', Low: 'p-low' }[p] || 'p-low';
+    return `<span class="priority-dot ${cls}"></span>`;
+  }
+
+  async function analyze() {
+    const transcript = document.getElementById('transcript').value.trim();
+    const title = document.getElementById('meetingTitle').value.trim() || 'Team Meeting';
+    const attendeesRaw = document.getElementById('attendees').value.trim();
+    const attendees = attendeesRaw ? attendeesRaw.split(',').map(s => s.trim()) : [];
+
+    clearError();
+    document.getElementById('results').classList.remove('visible');
+
+    if (!transcript) {
+      showError('Please paste a meeting transcript before analyzing.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript, meeting_title: title, attendees })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Analysis failed.');
+      }
+
+      const data = await res.json();
+      renderResults(data);
+
+    } catch (e) {
+      showError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function renderResults(data) {
+    // Summary
+    document.getElementById('summaryText').textContent = data.summary;
+
+    // Topics
+    const topicsWrap = document.getElementById('topicsWrap');
+    topicsWrap.innerHTML = (data.key_topics || [])
+      .map(t => `<span class="topic-chip">${t}</span>`).join('');
+
+    // Actions
+    const actionsWrap = document.getElementById('actionsWrap');
+    actionsWrap.innerHTML = (data.action_items || []).map(a => `
+      <div class="action-item">
+        <div class="action-task">${a.task}</div>
+        <div class="action-meta">
+          <span class="meta-chip">👤 ${a.owner}</span>
+          <span class="meta-chip">📅 ${a.deadline}</span>
+          <span class="meta-chip">${priorityDot(a.priority)} ${a.priority} Priority</span>
+        </div>
+      </div>`).join('');
+
+    // Decisions
+    const decisionsWrap = document.getElementById('decisionsWrap');
+    decisionsWrap.innerHTML = (data.decisions || []).map(d => `
+      <div class="decision-item">
+        <div class="decision-title">${d.decision}</div>
+        <div class="decision-sub">${d.rationale ? '💡 ' + d.rationale + '<br>' : ''}${d.impact ? '📌 Impact: ' + d.impact : ''}</div>
+      </div>`).join('');
+
+    // Email
+    document.getElementById('emailBody').textContent = data.follow_up_email;
+
+    // Show
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copyEmail() {
+    const text = document.getElementById('emailBody').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy to Clipboard';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
